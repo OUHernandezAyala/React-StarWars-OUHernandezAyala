@@ -1,45 +1,87 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			people:{},
+			planets:{},
+			starships:{},
+			favorite:[]
+				
+			
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			getPeople: async () =>{
+				console.log('Entrando a Get')
+				try{
+					const response = await fetch("https://www.swapi.tech/api/people/")
+						if(response.status != 200){
+							console.log('Ocurrio un error' + response.status)
+						}
+					const body = await response.json()
+					return body
+				}
+				catch(error){
+					console.error(error)
+				}
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+			getPlanets: async () =>{
+				console.log('Entrando a Get')
+				try{
+					const response = await fetch("https://www.swapi.tech/api/planets/")
+						if(response.status != 200){
+							console.log('Ocurrio un error' + response.status)
+						}
+					const body = await response.json()
+					return body
+				}
+				catch(error){
+					console.error(error)
+				}
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+			getStarships: async () =>{
+				console.log('Entrando a Get')
+				try{
+					const response = await fetch("https://www.swapi.tech/api/starships/")
+						if(response.status != 200){
+							console.log('Ocurrio un error' + response.status)
+						}
+					const body = await response.json()
+					return body
+				}
+				catch(error){
+					console.error(error)
+				}
+			},
+			handelInfo: async ()=> {
+					const actions = getActions()
+					const people = await actions.getPeople()
+					const planets = await actions.getPlanets()
+					const starships = await actions.getStarships()
+					setStore({people: people,
+						planets: planets,
+						starships: starships,})
+					
+			}, 
+			detailsInfo: async (info)=>{
+				try{
+					const response = await fetch (`https://www.swapi.tech/api${info}`)
+					if(response.status != 200){
+						console.log('Ocurrio un error'+ response.status)
+					}
+					const body = await response.json()
+					console.log(body)
+					return body
+				}
+				catch(error){
+					console.error(error);
+				}
+			},
+			addFav: (newFavorite)=>{
+				setStore({ favorite: newFavorite });
+			}
+				
 			}
 		}
 	};
-};
+
 
 export default getState;
