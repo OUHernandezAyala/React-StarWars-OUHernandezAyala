@@ -77,6 +77,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			addFav: (newFavorite)=>{
 				setStore({ favorite: newFavorite });
+			},
+			deleteFav: (delFavorite)=>{ 
+				const store = getStore()
+				const updateFavorites = store.favorite.filter((fav)=>{
+					return fav.uid !== delFavorite.uid ||
+					fav.name !== delFavorite.name ||
+					fav.type !== delFavorite.type
+				})
+				setStore({favorite:updateFavorites})
 			}
 				
 			}

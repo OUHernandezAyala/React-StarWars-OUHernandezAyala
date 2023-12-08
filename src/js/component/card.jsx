@@ -10,9 +10,12 @@ const Card = (props) => {
         setButtonState(!buttonState);
 
         if (!buttonState) {
-            const newFavorite = [...store.favorite, { uid: props.uid, name: props.name }];
+            const newFavorite = [...store.favorite, { uid: props.uid, name: props.name, type: props.id }];
             actions.addFav(newFavorite)
             console.log(newFavorite);
+        } else {
+            const delFavorite = { uid: props.uid, name: props.name, type: props.id };
+            actions.deleteFav(delFavorite);
         }
     };
 
