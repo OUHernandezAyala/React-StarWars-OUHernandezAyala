@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			people:{},
 			planets:{},
 			starships:{},
-			favorite:[]
+			favorite:[],
+			infoView:{}
 				
 			
 		},
@@ -68,8 +69,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log('Ocurrio un error'+ response.status)
 					}
 					const body = await response.json()
-					console.log(body)
-					return body
+					return body.result
 				}
 				catch(error){
 					console.error(error);
@@ -86,7 +86,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					fav.type !== delFavorite.type
 				})
 				setStore({favorite:updateFavorites})
-			}
+			},
+			handelInfoView: async (info)=> {
+				const actions = getActions()
+				const infoView = await actions.detailsInfo(info)
+				setStore({infoView: infoView})
+				
+		},
+			
 				
 			}
 		}
