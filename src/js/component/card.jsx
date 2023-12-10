@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 const Card = (props) => {
-    const [buttonState, setButtonState] = useState(false);
+    
     const {store,actions} = useContext(Context)
-
+    const isInFavorites = store.favorite.some(
+        (fav) => fav.uid === props.uid && fav.name === props.name && fav.type === props.id
+    );
     const toggleButtonState = () => {
-        setButtonState(!buttonState);
-
-        if (!buttonState) {
+        if (!isInFavorites ) {
             const newFavorite = [...store.favorite, { uid: props.uid, name: props.name, type: props.id }];
             actions.addFav(newFavorite)
             console.log(newFavorite);
@@ -27,7 +27,7 @@ const Card = (props) => {
                 <Link className="btn btn-primary" to={`/${props.id}/${props.uid}`}>
                     Check
                 </Link>
-                {buttonState ? (
+                {isInFavorites ? (
                     <i className="btn fas fa-heart" onClick={toggleButtonState} style={{ color: '#f01414' }}></i>
                 ) : (
                     <i className="btn far fa-heart" onClick={toggleButtonState} style={{ color: '#f01414' }}></i>
